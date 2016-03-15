@@ -1,6 +1,7 @@
 ﻿Module Module1
 
     Sub Main()
+        Dim total As Integer = 0
         My.Computer.FileSystem.DeleteFile("B:\Movies\Movies.txt")
         My.Computer.FileSystem.WriteAllText("B:\Movies\Movies.txt", "Animated" & vbCrLf, True)
         For Each foundFile As String In My.Computer.FileSystem.GetDirectories("B:\Movies\Animated")
@@ -12,11 +13,13 @@
                     moreFiles = Replace(moreFiles, foundFile + "\", "")
                     moreFiles = "       " + moreFiles & vbCrLf
                     My.Computer.FileSystem.WriteAllText("B:\Movies\Movies.txt", moreFiles, True)
+                    total += 1
                 Next
             Else
                 foundFile = Replace(foundFile, "B:\Movies\Animated\", "")
                 foundFile = "   " + foundFile & vbCrLf
                 My.Computer.FileSystem.WriteAllText("B:\Movies\Movies.txt", foundFile, True)
+                total += 1
             End If
         Next
         My.Computer.FileSystem.WriteAllText("B:\Movies\Movies.txt", vbCrLf & "Documentaries" & vbCrLf, True)
@@ -29,11 +32,13 @@
                     moreFiles = Replace(moreFiles, foundFile + "\", "")
                     moreFiles = "       " + moreFiles & vbCrLf
                     My.Computer.FileSystem.WriteAllText("B:\Movies\Movies.txt", moreFiles, True)
+                    total += 1
                 Next
             Else
                 foundFile = Replace(foundFile, "B:\Movies\Documentaries\", "")
                 foundFile = "   " + foundFile & vbCrLf
                 My.Computer.FileSystem.WriteAllText("B:\Movies\Movies.txt", foundFile, True)
+                total += 1
             End If
         Next
         My.Computer.FileSystem.WriteAllText("B:\Movies\Movies.txt", vbCrLf & "Feature" & vbCrLf, True)
@@ -46,13 +51,16 @@
                     moreFiles = Replace(moreFiles, foundFile + "\", "")
                     moreFiles = "       " + moreFiles & vbCrLf
                     My.Computer.FileSystem.WriteAllText("B:\Movies\Movies.txt", moreFiles, True)
+                    total += 1
                 Next
             Else
                 foundFile = Replace(foundFile, "B:\Movies\Feature\", "")
                 foundFile = "   " + foundFile & vbCrLf
                 My.Computer.FileSystem.WriteAllText("B:\Movies\Movies.txt", foundFile, True)
+                total += 1
             End If
         Next
+        My.Computer.FileSystem.WriteAllText("B:\Movies\Movies.txt", vbCrLf & "Total: " & total.ToString, True)
     End Sub
 
 End Module

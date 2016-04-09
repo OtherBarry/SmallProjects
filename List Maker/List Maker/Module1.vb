@@ -1,66 +1,35 @@
 ﻿Module Module1
-
     Sub Main()
         Dim total As Integer = 0
-        My.Computer.FileSystem.DeleteFile("B:\Movies\Movies.txt")
-        My.Computer.FileSystem.WriteAllText("B:\Movies\Movies.txt", "Animated" & vbCrLf, True)
-        For Each foundFile As String In My.Computer.FileSystem.GetDirectories("B:\Movies\Animated")
-            If Char.IsPunctuation(foundFile.Chars(foundFile.Length - 1)) = False Then
-                Dim otherFile As String = Replace(foundFile, "B:\Movies\Animated\", "")
-                otherFile = "   " + otherFile & vbCrLf
-                My.Computer.FileSystem.WriteAllText("B:\Movies\Movies.txt", otherFile, True)
-                For Each moreFiles As String In My.Computer.FileSystem.GetDirectories(foundFile)
-                    moreFiles = Replace(moreFiles, foundFile + "\", "")
-                    moreFiles = "       " + moreFiles & vbCrLf
-                    My.Computer.FileSystem.WriteAllText("B:\Movies\Movies.txt", moreFiles, True)
+        Dim DocLocation As String = "B:\Movies\Movies.txt"
+        Dim BackupLocation As String = "C:\Users\Charlie\Documents\Movies.txt"
+        Dim FileBase As String = "B:\Movies\"
+        Dim Folders() As String = {"Animated", "Documentaries", "Feature"}
+        My.Computer.FileSystem.DeleteFile(DocLocation)
+        My.Computer.FileSystem.DeleteFile(BackupLocation)
+        For Each Category As String In Folders
+            My.Computer.FileSystem.WriteAllText(DocLocation, Category & vbCrLf, True)
+            For Each Layer1 As String In My.Computer.FileSystem.GetDirectories(FileBase + Category)
+                If Char.IsPunctuation(Layer1.Chars(Layer1.Length - 1)) = False Then
+                    Dim iFilm As String = Replace(Layer1, FileBase + Category + "\", "")
+                    iFilm = "   " + iFilm & vbCrLf
+                    My.Computer.FileSystem.WriteAllText(DocLocation, iFilm, True)
+                    For Each sFilm As String In My.Computer.FileSystem.GetDirectories(Layer1)
+                        sFilm = Replace(sFilm, Layer1 + "\", "")
+                        sFilm = "       " + sFilm & vbCrLf
+                        My.Computer.FileSystem.WriteAllText(DocLocation, sFilm, True)
+                        total += 1
+                    Next
+                Else
+                    Layer1 = Replace(Layer1, FileBase + Category + "\", "")
+                    Layer1 = "   " + Layer1 & vbCrLf
+                    My.Computer.FileSystem.WriteAllText(DocLocation, Layer1, True)
                     total += 1
-                Next
-            Else
-                foundFile = Replace(foundFile, "B:\Movies\Animated\", "")
-                foundFile = "   " + foundFile & vbCrLf
-                My.Computer.FileSystem.WriteAllText("B:\Movies\Movies.txt", foundFile, True)
-                total += 1
-            End If
+                End If
+            Next
+            My.Computer.FileSystem.WriteAllText(DocLocation, vbCrLf, True)
         Next
-        My.Computer.FileSystem.WriteAllText("B:\Movies\Movies.txt", vbCrLf & "Documentaries" & vbCrLf, True)
-        For Each foundFile As String In My.Computer.FileSystem.GetDirectories("B:\Movies\Documentaries")
-            If Char.IsPunctuation(foundFile.Chars(foundFile.Length - 1)) = False Then
-                Dim otherFile As String = Replace(foundFile, "B:\Movies\Documentaries\", "")
-                otherFile = "   " + otherFile & vbCrLf
-                My.Computer.FileSystem.WriteAllText("B:\Movies\Movies.txt", otherFile, True)
-                For Each moreFiles As String In My.Computer.FileSystem.GetDirectories(foundFile)
-                    moreFiles = Replace(moreFiles, foundFile + "\", "")
-                    moreFiles = "       " + moreFiles & vbCrLf
-                    My.Computer.FileSystem.WriteAllText("B:\Movies\Movies.txt", moreFiles, True)
-                    total += 1
-                Next
-            Else
-                foundFile = Replace(foundFile, "B:\Movies\Documentaries\", "")
-                foundFile = "   " + foundFile & vbCrLf
-                My.Computer.FileSystem.WriteAllText("B:\Movies\Movies.txt", foundFile, True)
-                total += 1
-            End If
-        Next
-        My.Computer.FileSystem.WriteAllText("B:\Movies\Movies.txt", vbCrLf & "Feature" & vbCrLf, True)
-        For Each foundFile As String In My.Computer.FileSystem.GetDirectories("B:\Movies\Feature")
-            If Char.IsPunctuation(foundFile.Chars(foundFile.Length - 1)) = False Then
-                Dim otherFile As String = Replace(foundFile, "B:\Movies\Feature\", "")
-                otherFile = "   " + otherFile & vbCrLf
-                My.Computer.FileSystem.WriteAllText("B:\Movies\Movies.txt", otherFile, True)
-                For Each moreFiles As String In My.Computer.FileSystem.GetDirectories(foundFile)
-                    moreFiles = Replace(moreFiles, foundFile + "\", "")
-                    moreFiles = "       " + moreFiles & vbCrLf
-                    My.Computer.FileSystem.WriteAllText("B:\Movies\Movies.txt", moreFiles, True)
-                    total += 1
-                Next
-            Else
-                foundFile = Replace(foundFile, "B:\Movies\Feature\", "")
-                foundFile = "   " + foundFile & vbCrLf
-                My.Computer.FileSystem.WriteAllText("B:\Movies\Movies.txt", foundFile, True)
-                total += 1
-            End If
-        Next
-        My.Computer.FileSystem.WriteAllText("B:\Movies\Movies.txt", vbCrLf & "Total: " & total.ToString, True)
+        My.Computer.FileSystem.WriteAllText(DocLocation, "Total: " & total.ToString, True)
+        My.Computer.FileSystem.CopyFile(DocLocation, BackupLocation)
     End Sub
-
 End Module
